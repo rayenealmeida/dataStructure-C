@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <math.h>
 
 typedef int Item;
 #define less(A,B) ((A) < (B))
@@ -26,10 +27,17 @@ int partition(int *v, int begin, int end){
     return i;
 }
 
-void quicksort(Item *v, int begin, int end){
+int deuMerda;
+void quicksort(Item *v, int begin, int end, int recursion){
     if(begin >=end){
         return;
     }
+
+    if(recursion == 0){
+        deuMerda = 1;
+        return;
+    }
+
     int mid = (begin + end)/2;
     cmpexch(v[mid], v[end]);
         cmpexch(v[begin],v[mid]);
@@ -37,6 +45,21 @@ void quicksort(Item *v, int begin, int end){
     
 
     int p = partion(v,begin,end);
-    quicksort(v, begin, end);
-    quicksort(v, begin, end);
+    quicksort(v, begin, end, recursion-1);
+    quicksort(v, begin, end, recursion -1);
+}
+
+void introsort(Item *v, int begin, int end){
+    int maxRecursion = 2*((int)log2((double)end-begin+1));
+
+    deuMerda = 0;
+    quicksort(*v, begin, end, maxRecursion);
+
+    if(deuMerda ==1){
+        mergeSort(v, begin, end);
+    }else{
+        insertionSort(v, begin,end);
+
+    }
+
 }
