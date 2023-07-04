@@ -35,7 +35,7 @@ int main() {
 
         int j = buscaBinaria(conjunto, N, x); // Chama a função buscaBinaria para encontrar o índice j
 
-        printf("%d\n", j); // Imprime o índice j
+        printf("%d\n\n\n", j); // Imprime o índice j
     }
 
     return 0;
