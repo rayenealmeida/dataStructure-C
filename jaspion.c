@@ -126,6 +126,47 @@ void introsort(Item *v, int begin, int end) {
     }
 }
 
+int binarySearch(Item *v, int begin, int end, Item target) {
+    int mid;
+
+    while (end >= begin) {
+        mid = (begin + end) / 2;
+
+        if (less(v[mid], target)) {
+            begin = mid + 1;
+        } else if (less(target, v[mid])) {
+            end = mid - 1;
+        } else {
+            return mid;
+        }
+    }
+    return -1;
+}
+
+void translateLyrics(Item *dictionary, int numWords, char **lyrics, int numLines) {
+    for (int i = 0; i < numLines; i++) {
+        char *line = lyrics[i];
+        char *word = strtok(line, " ");
+
+        while (word != NULL) {
+            Item target;
+            strcpy(target.japones, word);
+
+            int index = binarySearch(dictionary, 0, numWords - 1, target);
+
+            if (index != -1) {
+                printf("%s ", dictionary[index].portugues);
+            } else {
+                printf("%s ", word);
+            }
+
+            word = strtok(NULL, " ");
+        }
+
+        printf("\n");
+    }
+}
+
 int main() {
     int instances;
     scanf("%d", &instances);
@@ -134,27 +175,38 @@ int main() {
         int M, N;
         scanf("%d %d", &M, &N);
 
-        Item* v = malloc(sizeof(Item) * M);
+        Item* dictionary = malloc(sizeof(Item) * M);
         for (int i = 0; i < M; i++) {
-            v[i].japones = malloc(81);
-            v[i].portugues = malloc(81);
-            scanf(" %[^\n]", v[i].japones);
-            scanf(" %[^\n]", v[i].portugues);
+            dictionary[i].japones = malloc(81);
+            dictionary[i].portugues = malloc(81);
+            scanf(" %[^\n]", dictionary[i].japones);
+            scanf(" %[^\n]", dictionary[i].portugues);
         }
-        introsort(v, 0, M - 1);
+        introsort(dictionary, 0, M - 1);
 
-        // Imprimir o vetor ordenado
-        for (int i = 0; i < M; i++) {
-            printf("%s - %s\n", v[i].japones, v[i].portugues);
+        char **lyrics = malloc(sizeof(char*) * N);
+        for (int i = 0; i < N; i++) {
+            lyrics[i] = malloc(81);
+            scanf(" %[^\n]", lyrics[i]);
         }
+
+        translateLyrics(dictionary, M, lyrics, N);
+
+        printf("\n");
 
         // Liberar memória alocada
         for (int i = 0; i < M; i++) {
-            free(v[i].japones);
-            free(v[i].portugues);
+            free(dictionary[i].japones);
+            free(dictionary[i].portugues);
         }
-        free(v);
+        free(dictionary);
+
+        for (int i = 0; i < N; i++) {
+            free(lyrics[i]);
+        }
+        free(lyrics);
     }
 
     return 0;
 }
+
