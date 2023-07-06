@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 typedef struct no{
     int valor;
@@ -20,7 +21,7 @@ void inserir_na_fila(No **fila, int num){
             aux-> proximo =novo;
         }
     }
-    else{ print("\nErro ao alocar memoria.\n");
+    else{ printf("\nErro ao alocar memoria.\n");
     }
 }
     
