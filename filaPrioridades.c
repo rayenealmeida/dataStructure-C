@@ -20,64 +20,86 @@ void criar_fila(Fila *fila){
     fila -> tam = 0;
 }
 
-void inserir_na_fila(Fila *fila, int num){
+void inserir_na_fila(No **fila, int num){
     No *aux, *novo = malloc(sizeof(No));
     if(novo){
         novo->valor=num;
         novo->proximo =NULL;
-        if(fila ->prim==NULL){
-            fila->prim = novo;
-            fila -> fim = novo;//primrio e ultimo são o mesmo porque temos um só
-
+        if(*fila==NULL){
+            *fila = novo;
+        }
+        else{
+           aux = *fila;
+           while(aux -> proximo){
+            aux = aux->proximo;
+           }
+           aux->proximo=novo;
+           
+        }
+    }
+    else{ printf("\nErro ao alocar memoria.\n");
+    }
+}
+void inserir_com_prioridade(No **fila, int num){
+    No *aux, *novo = malloc(sizeof(No));
+    if(novo){
+        novo->valor=num;
+        novo->proximo =NULL;
+        if(*fila==NULL){
+            *fila= novo;
 
         }
         else{
-            //inserir no fim da fila
-            fila->fim->proximo =novo;
-            //o ultimo nó ja é outro entao
-            //o fim da fila é o que acabei de inserir
-            fila->fim=novo;
-           
+            //é prioridade?
+            if(num > 59){
+                //é a primeira prioridade?
+                if((*fila)->valor <60){
+                    novo->proximo =*fila;
+                    *fila =novo;
+                }
+            }
+            else{
+                aux = *fila;
+                while(aux->proximo && aux->proximo->valor>59){
+                    aux = aux->proximo;
+                }
+                novo->proximo=aux->proximo;
+                aux->proximo=novo;
+            }
+            
         }
-        fila->tam++;//independente se tiver vazia ou não
+        
     }
     else{ printf("\nErro ao alocar memoria.\n");
     }
 }
 
-No*  remover_da_fila(Fila *fila){
-    No *remover = NULL;//inicializa com null
-    //verificar se esta fazia
-    if(fila->prim){
-        remover = fila->prim;
-        //fila vai diminuir uma unidade
-        fila->prim = remover -> proximo;
-        fila->tam--;//remove então diminui
+No*  remover_da_fila(No **fila){
+    No *remover=NULL;
+    if(fila){
+        remover = *fila;
+        *fila = remover -> proximo;
     }else{
         printf("\tFila vazia\n");
     }
     return remover;
 }
 
-void imprimir(Fila *fila){
-    No *aux = fila->prim;
+void imprimir(No *fila){
     printf("\t------FILA------\n");
-    while(aux){
-        printf("%d ", aux->valor);
-        aux = aux -> proximo;
+    while(fila){
+        printf("%d ", fila->valor);
+        fila = fila -> proximo;
     }
     printf("\t------FIM FILA------\n");
 }
     
 int main(){
-    No *r;
-    Fila fila;
+    No *r, *fila= NULL;
     int opcao, valor;
 
-    criar_fila(&fila);
-
     do{
-        printf("\t0 - Sair\n\t1 - Inserir\n\t2 - Remover\n\t3 - Imprimir\n");
+        printf("\t0 - Sair\n\t1 - Inserir\n\t2 - Remover\n\t3 - Imprimir\n\t4- Inserir com prioridade\n");
         scanf("%d", &opcao);
 
         switch(opcao){
@@ -94,7 +116,12 @@ int main(){
             }
             break;
         case 3:
-            imprimir(&fila);
+            imprimir(fila);
+            break;
+        case 4:
+            printf("Digite um valor: ");
+            scanf("%d", &valor);
+            inserir_com_prioridade(&fila, valor);
             break;
         default:
             if(opcao != 0){
