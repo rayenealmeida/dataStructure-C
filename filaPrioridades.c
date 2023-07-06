@@ -24,8 +24,20 @@ void inserir_na_fila(No **fila, int num){
     else{ printf("\nErro ao alocar memoria.\n");
     }
 }
-    
 
+No*  remover_da_fila(No **fila){
+    No *remover = NULL;//inicializa com null
+    //verificar se esta fazia
+    if(*fila){
+        remover = *fila;
+        //fila vai diminuir uma unidade
+        *fila = remover -> proximo;
+    }else{
+        printf("\nFila vazia\n");
+        return remover;
+    }
+}
+    
 int main(){
     No *fila = NULL;
 
