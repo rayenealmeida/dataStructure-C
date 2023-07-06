@@ -15,7 +15,7 @@
 - Destruição da fila
 - informações com tamanho, se a fila está cheia ou vazia
 
-### Esas operações dependem da implementação:
+### Essas operações dependem da implementação:
 - lista dinâmica encadeada
 - array desordenado
 - array ordenado
