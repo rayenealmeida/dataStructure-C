@@ -6,50 +6,75 @@ typedef struct no{
     struct no *proximo;
 }No;
 
-void inserir_na_fila(No **fila, int num){
+typedef struct{
+    No *prim;//primriro
+    //se tem um ponteiro direto para o fim da fila não será necessário percorrer a fila para inserir uma elemento novo na fila
+    No *fim;
+    int tam;
+
+}Fila;
+
+void criar_fila(Fila *fila){
+    fila -> prim =NULL;
+    fila -> fim = NULL;
+    fila -> tam = 0;
+}
+
+void inserir_na_fila(Fila *fila, int num){
     No *aux, *novo = malloc(sizeof(No));
     if(novo){
         novo->valor=num;
         novo->proximo =NULL;
-        if(*fila ==NULL){
-            *fila = novo;
+        if(fila ->prim==NULL){
+            fila->prim = novo;
+            fila -> fim = novo;//primrio e ultimo são o mesmo porque temos um só
+
+
         }
         else{
-            aux = *fila;
-            while(aux->proximo)
-                aux= aux ->proximo;
-            aux-> proximo =novo;
+            //inserir no fim da fila
+            fila->fim->proximo =novo;
+            //o ultimo nó ja é outro entao
+            //o fim da fila é o que acabei de inserir
+            fila->fim=novo;
+           
         }
+        fila->tam++;//independente se tiver vazia ou não
     }
     else{ printf("\nErro ao alocar memoria.\n");
     }
 }
 
-No*  remover_da_fila(No **fila){
+No*  remover_da_fila(Fila *fila){
     No *remover = NULL;//inicializa com null
     //verificar se esta fazia
-    if(*fila){
-        remover = *fila;
+    if(fila->prim){
+        remover = fila->prim;
         //fila vai diminuir uma unidade
-        *fila = remover -> proximo;
+        fila->prim = remover -> proximo;
+        fila->tam--;//remove então diminui
     }else{
         printf("\tFila vazia\n");
     }
     return remover;
 }
 
-void imprimir(No *fila){
+void imprimir(Fila *fila){
+    No *aux = fila->prim;
     printf("\t------FILA------\n");
-    while(fila){
-        printf("%d ", fila->valor);
-        fila = fila -> proximo;
+    while(aux){
+        printf("%d ", aux->valor);
+        aux = aux -> proximo;
     }
     printf("\t------FIM FILA------\n");
 }
     
 int main(){
-    No *r, *fila = NULL;
+    No *r;
+    Fila fila;
     int opcao, valor;
+
+    criar_fila(&fila);
 
     do{
         printf("\t0 - Sair\n\t1 - Inserir\n\t2 - Remover\n\t3 - Imprimir\n");
@@ -69,7 +94,7 @@ int main(){
             }
             break;
         case 3:
-            imprimir(fila);
+            imprimir(&fila);
             break;
         default:
             if(opcao != 0){
