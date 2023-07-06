@@ -33,12 +33,49 @@ No*  remover_da_fila(No **fila){
         //fila vai diminuir uma unidade
         *fila = remover -> proximo;
     }else{
-        printf("\nFila vazia\n");
+        printf("\tFila vazia\n");
         return remover;
     }
 }
+
+void imprimir(No *fila){
+    printf("\t------FILA------\n");
+    while(fila){
+        printf("%d", fila->valor);
+        fila = fila -> proximo;
+    }
+    printf("\t------FIM FILA------\n");
+}
     
 int main(){
-    No *fila = NULL;
+    No *r, *fila = NULL;
+    int opcao, valor;
+
+    do{
+        printf("\t0 - Sair\n\t1 - Inserir\n\t2 - Remover\n\t3 - Imprimir\n");
+        scanf("%d", &opcao);
+
+        switch(opcao){
+        case 1:
+            printf("Digite um valor: ");
+            scanf("%d", &valor);
+            inserir_na_fila(&fila, valor);
+            break;
+        case 2:
+            r = remover_da_fila(&fila);
+            if(r){
+                printf("Removido: %d\n", r -> valor);
+                free(r);
+            }
+            break;
+        case 3:
+            imprimir(fila);
+            break;
+        default:
+            if(opcao != 0){
+                printf("\nOpção inválida!\n");
+            }
+        }
+    }while(opcao != 0);
 
 }
