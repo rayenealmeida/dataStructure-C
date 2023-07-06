@@ -34,14 +34,14 @@ No*  remover_da_fila(No **fila){
         *fila = remover -> proximo;
     }else{
         printf("\tFila vazia\n");
-        return remover;
     }
+    return remover;
 }
 
 void imprimir(No *fila){
     printf("\t------FILA------\n");
     while(fila){
-        printf("%d", fila->valor);
+        printf("%d ", fila->valor);
         fila = fila -> proximo;
     }
     printf("\t------FIM FILA------\n");
